@@ -13,4 +13,7 @@ export default {
 @import 'uview-ui/index.scss';
 // 引入和风天气字体图标
 @import url('./icon/qweather-icons.css');
+view {
+  font-family: $fontFamily;
+}
 </style>

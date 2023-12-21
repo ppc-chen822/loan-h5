@@ -20,7 +20,10 @@
   align-items: center;
   width: 100%;
 }
-$mainColor: #c63c4c;
+$fontFamily:-apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica,
+    Segoe UI, Arial, Roboto, PingFang SC, miui, Hiragino Sans GB,
+    Microsoft Yahei, sans-serif;
+$mainColor: #0065eb;
 /* 行为相关颜色 */
 $uni-color-primary: #007aff;
 $uni-color-success: #4cd964;
