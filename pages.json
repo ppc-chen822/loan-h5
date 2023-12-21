@@ -11,6 +11,15 @@
 				"navigationBarTextStyle": "white",
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/apply/apply",
+			"style": {
+				"navigationBarTitleText": "浦数贷申请",
+				"navigationBarBackgroundColor": "white",
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
+			}
 		}
 	],
 	"globalStyle": {
