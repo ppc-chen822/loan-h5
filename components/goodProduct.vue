@@ -69,15 +69,18 @@ export default {
       list: []
     }
   },
+  onLoad(options) {
+    console.log(options.deviceId)
+  },
   mounted() {
     this.getProduct()
   },
   methods: {
     // 详情
-    goDetail(item) {
-      if (item.modeDetail) {
-        window.location.href = item.modeDetail
-      }
+    goDetail({ id, name, mode }) {
+      uni.navigateTo({
+        url: `/pages/apply/apply?id=${id}&name=${name}&mode=${mode}`
+      })
     },
     sectionChange(index) {
       console.log(index)

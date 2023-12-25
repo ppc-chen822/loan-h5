@@ -8,7 +8,7 @@
         :model="formData"
         labelAlign="center"
         :rules="rules"
-        ref="form"
+        ref="formData"
       >
         <uv-form-item label="企业名称" prop="copyName" borderBottom>
           <uv-input
@@ -18,7 +18,7 @@
           >
           </uv-input>
         </uv-form-item>
-        <uv-form-item label="姓名" prop="name" borderBottom>
+        <uv-form-item v-if="mode == 'H5'" label="姓名" prop="name" borderBottom>
           <uv-input
             v-model="formData.name"
             placeholder="请输入申请人姓名"
@@ -26,7 +26,12 @@
           >
           </uv-input>
         </uv-form-item>
-        <uv-form-item label="身份证" prop="idCard" borderBottom>
+        <uv-form-item
+          v-if="mode == 'H5'"
+          label="身份证"
+          prop="idCard"
+          borderBottom
+        >
           <uv-input
             v-model="formData.idCard"
             placeholder="请输入申请人身份证号"
@@ -34,9 +39,9 @@
           >
           </uv-input>
         </uv-form-item>
-        <uv-form-item label="手机号" prop="tel" borderBottom>
+        <uv-form-item label="手机号" prop="phone" borderBottom>
           <uv-input
-            v-model="formData.tel"
+            v-model="formData.phone"
             placeholder="请输入申请人手机号"
             border="none"
           >
@@ -44,26 +49,87 @@
         </uv-form-item>
       </uv-form>
     </view>
-    <bottom-tool title="提交申请" />
+    <bottom-tool title="提交申请" @click="submit" />
   </view>
 </template>
 
 <script>
+import { applyProductApi } from '@/api/common.js'
 import bottomTool from '@/components/bottomTool/bottomTool.vue'
 export default {
   components: { bottomTool },
   data() {
     return {
+      mode: '',
       formData: {
         copyName: '',
         name: '',
         idCard: '',
-        tel: ''
+        phone: '',
+        productId: ''
       },
-      rules: {}
+      rules: {
+        phone: [
+          {
+            required: true,
+            message: '请输入正确手机号',
+            trigger: ['change', 'blur']
+          },
+          {
+            validator: (rule, value, callback) => {
+              return uni.$u.test.mobile(value)
+            },
+            message: '请输入正确手机号',
+            trigger: ['change', 'blur']
+          }
+        ],
+        idCard: [
+          {
+            message: '请输入正确身份证号',
+            trigger: ['change', 'blur']
+          },
+          {
+            validator: (rule, value, callback) => {
+              return uni.$u.test.idCard(value)
+            },
+            message: '请输入正确身份证号',
+            trigger: ['change', 'blur']
+          }
+        ]
+      }
     }
   },
-  methods: {}
+  onLoad(options) {
+    console.log(options)
+    if (options) {
+      this.mode = options.mode
+      this.formData.copyName = options.name
+      this.formData.productId = options.id
+    }
+  },
+  methods: {
+    // 立即注册
+    submit() {
+      this.$refs.formData.validate().then((res) => {
+        this.applyProduct()
+      })
+    },
+    /**申请产品 */
+    applyProduct() {
+      const { formData } = this
+      const deviceId = '17019169871105749329'
+      applyProductApi(deviceId, formData)
+        .then((res) => {
+          uni.reLaunch({
+            url: '/pages/order/order'
+          })
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+    /**  */
+  }
 }
 </script>
 
@@ -79,6 +145,7 @@ export default {
 .apply_form {
   margin-top: 52rpx;
   padding: 0 28rpx;
+  padding-bottom: 200rpx;
 }
 /deep/ .uv-form-item {
   padding: 12rpx 0;

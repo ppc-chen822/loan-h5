@@ -4,7 +4,8 @@ import { CLIENT_ID, CLIENT_SECRET } from '@/constant';
 // 此vm参数为页面的实例，可以通过它引用vuex中的变量
 module.exports = (vm) => {
 	uni.$u.http.setConfig((config) => {
-		config.baseURL = 'http://web.huokexinxi.com' /* 根域名 */
+		config.baseURL = 'http://api.huokexinxi.com' /* 根域名 */
+		// config.baseURL = 'http://web.huokexinxi.com' /* 根域名 */
 		return config
 	})
 
