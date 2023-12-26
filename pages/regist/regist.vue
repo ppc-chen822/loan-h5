@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { smsCodeApi, registApi } from '@/api/common.js'
+import { smsCodeApi, registApi, downloadApi } from '@/api/common.js'
 import bottomTool from '@/components/bottomTool/bottomTool.vue'
 export default {
   components: { bottomTool },
@@ -56,7 +56,7 @@ export default {
       tips: '',
       mode: '',
       formData: {
-        reCommunicationNumber: '1212',
+        reCommunicationNumber: '10543',
         vCode: '',
         user_mail: '', //手机号
         user_sex: 1
@@ -85,7 +85,38 @@ export default {
       // this.formData.reCommunicationNumber = options.reCommunicationNumber
     }
   },
+  mounted() {},
   methods: {
+    // 下载app
+    downloadApp() {
+      downloadApi()
+        .then((res) => {
+          console.log(res.data.androidDownloadUrl)
+          window.location.href = res.data.androidDownloadUrl
+          // const downloadTask = uni.downloadFile({
+          //   url: res.data.androidDownloadUrl, //仅为示例，并非真实的资源
+          //   timeout: 300000,
+          //   success: (res) => {
+          //     console.log(res)
+          //     if (res.statusCode === 200) {
+          //       console.log('下载成功')
+          //     }
+          //   }
+          // })
+          // downloadTask.onProgressUpdate((res) => {
+          //   uni.showLoading({
+          //     title: `下载中${res.progress}%`,
+          //     mask: true
+          //   })
+          //   if (res.progress == 100) {
+          //     uni.hideLoading()
+          //   }
+          // })
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
     codeChange(text) {
       console.log(text)
       this.tips = text
@@ -134,13 +165,19 @@ export default {
           ...formData
         }
       }
-      console.log(params)
       registApi(params)
         .then((res) => {
           console.log(res)
+          if (res.data.returnValue.includes('error')) {
+            uni.$u.toast(res.data.returnValue)
+          } else {
+            uni.$u.toast('注册成功')
+            this.downloadApp()
+          }
         })
         .catch((err) => {
           console.log(err)
+          uni.$u.toast(err)
         })
     }
   }

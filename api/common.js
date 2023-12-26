@@ -28,7 +28,7 @@ export const getProDetailApi = (productOrderId) => http.get(
 )
 // 注册
 export const registApi = (params) => http.post(
-	`http://im.huokexinxi.com/yuecoolChat/rest_post`,
+	`/api/user/register`,
 	params
 )
 // 更新订单
@@ -44,4 +44,9 @@ export const smsCodeApi = (params) => http.post(
 			'Content-Type': 'application/x-www-form-urlencoded'
 		}
 	}
+)
+// 下载
+export const downloadApi = (params) => http.get(
+	`/api/appConfig/getAppConfig`,
+	params
 )
