@@ -117,7 +117,8 @@ export default {
     /**申请产品 */
     applyProduct() {
       const { formData } = this
-      const deviceId = '17019169871105749329'
+      // const deviceId = '17019169871105749329'
+      const deviceId = uni.$u.sys().deviceId
       applyProductApi(deviceId, formData)
         .then((res) => {
           uni.reLaunch({

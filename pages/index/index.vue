@@ -1,20 +1,13 @@
 <template>
   <view class="report_content">
-    <u-sticky bgColor="#fff">
-      <!-- <view v-if="isBoss">
-        <u-image :src="topBg" width="100%" mode="scaleToFill"></u-image>
-      </view> -->
-      <view class="con_top">
-        <view class="title" v-if="Object.values(firmContent).length !== 0">{{
-          firmContent.baseinfoVo.nsrmc || '--'
-        }}</view>
-        <!-- <view class="eval">总体评价 888分 | A级</view> -->
-        <u-line color="#e6e6e6" dashed margin="48rpx 0 0 0" />
-        <view class="label">正常</view>
-      </view>
-
+    <u-sticky bgColor="#2C5FDF">
       <view class="con_tabs">
-        <u-tabs :list="tabsList" @click="tabClick" :scrollable="false" />
+        <u-tabs
+          :list="tabsList"
+          @click="tabClick"
+          inactive-color="#fff"
+          :scrollable="false"
+        />
       </view>
     </u-sticky>
     <firmInfo
@@ -52,7 +45,7 @@ export default {
           key: 3
         },
         {
-          name: '企业信息',
+          name: '企业点亮',
           key: 1
         },
         {

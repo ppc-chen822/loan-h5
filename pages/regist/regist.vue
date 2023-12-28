@@ -56,7 +56,7 @@ export default {
       tips: '',
       mode: '',
       formData: {
-        reCommunicationNumber: '10543',
+        reCommunicationNumber: '',
         vCode: '',
         user_mail: '', //手机号
         user_sex: 1
@@ -82,7 +82,7 @@ export default {
   onLoad(options) {
     console.log(options)
     if (options) {
-      // this.formData.reCommunicationNumber = options.reCommunicationNumber
+      this.formData.reCommunicationNumber = options.reCommunicationNumber
     }
   },
   mounted() {},
@@ -140,7 +140,12 @@ export default {
       }
       smsCodeApi(params)
         .then((res) => {
-          console.log(res)
+          if (this.$refs.uCode.canGetCode) {
+            this.$refs.uCode.start()
+            console.log(this.$refs.uCode)
+          } else {
+            uni.$u.toast('倒计时结束后再发送')
+          }
         })
         .then((res) => {
           console.log(res)

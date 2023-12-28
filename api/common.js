@@ -13,32 +13,36 @@ export const getFirmDataApi = (deviceId) => http.get(
 export const getProductApi = (deviceId) => http.get(
 	`/system/company/productaccessinfo/${deviceId}`
 )
+
+
+const baseURL = 'http://api.huokexinxi.com' /* 根域名 */
+
 // 申请产品
 export const applyProductApi = (deviceId, params) => http.post(
-	`/api/productOrder/createOrder/${deviceId}`,
+	`${baseURL}/api/productOrder/createOrder/${deviceId}`,
 	params
 )
 // 产品列表
 export const getProListApi = (type, companyName, data) => http.get(
-	`/api/productOrder/list/${type}?companyName=${companyName}`, data
+	`${baseURL}/api/productOrder/list/${type}?companyName=${companyName}`, data
 )
 // 查询产品详情
 export const getProDetailApi = (productOrderId) => http.get(
-	`/api/productOrder/detail/${productOrderId}`
+	`${baseURL}/api/productOrder/detail/${productOrderId}`
 )
 // 注册
 export const registApi = (params) => http.post(
-	`/api/user/register`,
+	`${baseURL}/api/user/register`,
 	params
 )
 // 更新订单
 export const updateOrderApi = (id, params) => http.put(
-	`/api/productOrder/updateOrder/${id}`,
+	`${baseURL}/api/productOrder/updateOrder/${id}`,
 	params
 )
 // 发送短信
 export const smsCodeApi = (params) => http.post(
-	`/api/sms/getVerifyCode`, params,
+	`${baseURL}/api/sms/getVerifyCode`, params,
 	{
 		header: {
 			'Content-Type': 'application/x-www-form-urlencoded'
@@ -47,6 +51,6 @@ export const smsCodeApi = (params) => http.post(
 )
 // 下载
 export const downloadApi = (params) => http.get(
-	`/api/appConfig/getAppConfig`,
+	`${baseURL}/api/appConfig/getAppConfig`,
 	params
 )
