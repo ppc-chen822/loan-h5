@@ -68,6 +68,7 @@ export default {
         phone: '',
         productId: ''
       },
+      title: '',
       rules: {
         phone: [
           {
@@ -102,9 +103,14 @@ export default {
   onLoad(options) {
     if (options) {
       this.mode = options.mode
-      this.formData.copyName = options.name
       this.formData.productId = options.id
+      this.title = options.name
     }
+  },
+  onReady() {
+    uni.setNavigationBarTitle({
+      title: `${this.title}`
+    })
   },
   methods: {
     // 立即注册
