@@ -100,7 +100,6 @@ export default {
     }
   },
   onLoad(options) {
-    console.log(options)
     if (options) {
       this.mode = options.mode
       this.formData.copyName = options.name
@@ -117,13 +116,10 @@ export default {
     /**申请产品 */
     applyProduct() {
       const { formData } = this
-      // const deviceId = '17019169871105749329'
-      const deviceId = uni.$u.sys().deviceId
+      const deviceId = uni.getStorageSync('deviceId')
       applyProductApi(deviceId, formData)
         .then((res) => {
-          uni.reLaunch({
-            url: '/pages/order/order'
-          })
+          window.location.href = res.data
         })
         .catch((err) => {
           console.log(err)

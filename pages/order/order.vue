@@ -66,11 +66,15 @@ export default {
       ],
       company: '',
       type: 1,
-      list: []
+      list: [],
+      userId: ''
     }
   },
-  mounted() {
-    this.getProList()
+  onLoad(options) {
+    if (options.userId) {
+      this.userId = options.userId
+      this.getProList(options.userId)
+    }
   },
   methods: {
     /** 状态颜色 */
@@ -110,6 +114,7 @@ export default {
     },
     /** 切换tab */
     tabSwitch({ index }) {
+      const { userId } = this
       switch (index) {
         case 0:
           this.type = 1
@@ -126,12 +131,16 @@ export default {
         default:
           break
       }
-      this.getProList()
+      this.getProList(userId)
     },
     /**查询订单列表 */
-    getProList() {
+    getProList(userId) {
       const { type, company } = this
-      getProListApi(type, company)
+
+      let params = {
+        companyName: company
+      }
+      getProListApi(type, userId, params)
         .then((res) => {
           this.list = res.data
         })
@@ -193,6 +202,9 @@ export default {
       }
     }
   }
+}
+/deep/.uv-sticky {
+  top: 0 !important;
 }
 </style>
 <style>

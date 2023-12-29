@@ -48,7 +48,7 @@ module.exports = (vm) => {
 	}, (response) => {
 		// 通用了错误处理
 		const code = response?.status || response?.data?.code;
-		const message = response?.data?.msg || response?.statusText || message;
+		const message = response.data.message || '请求失败'
 		const ERROR_MESSAGE = {
 			url: response.config.url,
 			code: response?.data?.code || code,
@@ -57,7 +57,7 @@ module.exports = (vm) => {
 
 		switch (code) {
 			case 400: {
-				uni.$u.toast('错误(400): 程序错误，请联系管理员。');
+				uni.$u.toast(ERROR_MESSAGE.message);
 				console.error('参数错误:', ERROR_MESSAGE);
 				break;
 			}

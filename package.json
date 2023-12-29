@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "echarts": "^5.4.3",
+    "fingerprintjs2": "^2.1.4",
     "uview-ui": "^2.0.31"
   }
 }

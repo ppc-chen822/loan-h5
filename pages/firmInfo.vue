@@ -1,6 +1,23 @@
 <template>
   <view class="form_data">
     <com-title title="企业概况" :icon="titleIcon" />
+    <view class="top" v-if="false">
+      <view class="title"
+        >{{ dataObj.baseinfoVo.nsrmc }}
+        <view class="tips">产品方案</view>
+      </view>
+      <view class="module_text">
+        <view><text>成立日期：</text>{{ dataObj.basic.startDate }}</view>
+        <view
+          ><text>纳税人资格：</text
+          >{{ nsrzgFun(dataObj.baseinfoVo.nsrzg) }}</view
+        >
+      </view>
+      <view class="module_text">
+        <view><text>法人姓名：</text>{{ dataObj.basic.operName }}</view>
+        <view><text>纳税信用等级：</text>{{ dataObj.evaluationResult }}</view>
+      </view>
+    </view>
     <u-cell-group :border="false">
       <u-cell
         v-for="(item, index) in formData"
@@ -8,13 +25,6 @@
         :title="item.name"
         :value="item.value || '--'"
       >
-        <!-- <view
-          slot="value"
-          v-if="!item.value && item.name == '股东名称'"
-          class="u-slot-title"
-        >
-          <tableInfo :th="th" :td="td" />
-        </view> -->
       </u-cell>
     </u-cell-group>
     <view v-if="isShow">
@@ -304,6 +314,45 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.top {
+  background: #2c5fdf;
+  padding: 48rpx 30rpx;
+  .title {
+    font-weight: bold;
+    font-size: 32rpx;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    .tips {
+      margin-left: 12rpx;
+      font-size: 20rpx;
+      font-weight: 400;
+      color: #ffffff;
+      text-align: center;
+      width: 96rpx;
+      height: 28rpx;
+      line-height: 28rpx;
+      border-radius: 4rpx 4rpx 4rpx 4rpx;
+      border: 1rpx solid #ffffff;
+    }
+  }
+}
+.module_text {
+  display: flex;
+  font-size: 24rpx;
+  margin-top: 32rpx;
+  text {
+    color: #93b8ff;
+  }
+  view {
+    color: #fff;
+    min-width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
 .module {
   background-color: #fff;
   margin-top: 24rpx;
@@ -323,7 +372,7 @@ export default {
   }
 }
 .form_data {
-  margin-top: 24rpx;
+  // margin-top: 24rpx;
   background-color: #fff;
   padding-bottom: 32rpx;
 }

@@ -1,11 +1,23 @@
 <template>
   <view class="report_content">
-    <u-sticky bgColor="#2C5FDF">
+    <u-sticky :bgColor="curTab == 1 ? '#2c5fdf' : '#fff'">
       <view class="con_tabs">
         <u-tabs
           :list="tabsList"
           @click="tabClick"
-          inactive-color="#fff"
+          lineWidth="30"
+          lineHeight="4"
+          :inactive-style="
+            curTab == 1
+              ? { color: '#93B8FF', fontWeight: 'bold' }
+              : { color: '#222', fontWeight: 'bold' }
+          "
+          :activeStyle="
+            curTab == 1
+              ? { color: '#fff', fontWeight: 'bold' }
+              : { color: '#2c5fdf', fontWeight: 'bold' }
+          "
+          :lineColor="curTab == 1 ? '#fff' : '#2c5fdf'"
           :scrollable="false"
         />
       </view>
@@ -18,7 +30,7 @@
       v-if="curTab == 2 && Object.values(marketContent).length !== 0"
       :dataObj="marketContent"
     />
-    <product v-if="curTab == 3" />
+    <product v-if="curTab == 3" :deviceId="deviceId"/>
   </view>
 </template>
 
@@ -34,28 +46,30 @@ export default {
     market
   },
   onLoad(options) {
-    console.log(options)
-    if (options.deviceId) {
-      this.getFirmData(options.deviceId)
-      this.curTab = 3
-      this.isBoss = true
-      this.tabsList = [
-        {
-          name: '准入产品',
-          key: 3
-        },
-        {
-          name: '企业点亮',
-          key: 1
-        },
-        {
-          name: '营销数据',
-          key: 2
-        }
-      ]
-    }
-    if (options.userId) {
-      this.getAuthorizeUrl(options.userId)
+    if (options) {
+      this.deviceId = options.deviceId
+			uni.setStorageSync('deviceId',options.deviceId)
+      if (options.userId) {
+        this.getAuthorizeUrl(options.userId)
+      } else {
+        this.getFirmData(options.deviceId)
+        this.curTab = 3
+        this.isBoss = true
+        this.tabsList = [
+          {
+            name: '准入产品',
+            key: 3
+          },
+          {
+            name: '企业信息',
+            key: 1
+          },
+          {
+            name: '营销数据',
+            key: 2
+          }
+        ]
+      }
     }
   },
   data() {
@@ -76,7 +90,6 @@ export default {
           key: 3
         }
       ],
-      topBg: require('@/static/topBg.jpg'),
       firmContent: {},
       marketContent: {}
     }
@@ -92,13 +105,11 @@ export default {
      * 获取企业数据
      */
     getFirmData(devid) {
-      const deviceId = devid ? devid : uni.$u.sys().deviceId
-      // const deviceId = '123123'
       uni.showLoading({
         title: '加载中',
         mask: true
       })
-      getFirmDataApi(deviceId)
+      getFirmDataApi(devid)
         .then((res) => {
           this.firmContent = {
             baseinfoVo: res.baseinfoVo || {},
@@ -145,7 +156,7 @@ export default {
         })
         return
       }
-      const deviceId = uni.$u.sys().deviceId
+      const deviceId = this.deviceId
       const userId = id
       getAuthorizeUrlApi(deviceId, userId)
         .then((res) => {
@@ -153,7 +164,7 @@ export default {
           if (res.baseUrl) {
             window.location.href = res.baseUrl
           } else {
-            this.getFirmData()
+            this.getFirmData(deviceId)
           }
         })
         .catch((err) => {

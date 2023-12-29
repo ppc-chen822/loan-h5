@@ -23,8 +23,8 @@ export const applyProductApi = (deviceId, params) => http.post(
 	params
 )
 // 产品列表
-export const getProListApi = (type, companyName, data) => http.get(
-	`${baseURL}/api/productOrder/list/${type}?companyName=${companyName}`, data
+export const getProListApi = (type, userId, params) => http.get(
+	`${baseURL}/api/productOrder/list/${type}/${userId}`, { params }
 )
 // 查询产品详情
 export const getProDetailApi = (productOrderId) => http.get(

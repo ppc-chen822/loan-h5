@@ -183,3 +183,19 @@ export function debounce(func, wait, immediate) {
 		}
 	}
 }
+/**
+ * 生成设备UUID
+ */
+import Fingerprint2 from 'fingerprintjs2' // 引入fingerprintjs
+export async function createFingerprint() {
+	// 浏览器指纹
+	const fingerprint = Fingerprint2.get((components) => {
+		// 参数只有回调函数时，默认浏览器指纹依据所有配置信息进行生成
+		const values = components.map((component) => component.value) // 配置的值的数组
+		const murmur = Fingerprint2.x64hash128(values.join(''), 31) // 生成浏览器指纹
+		console.log(components)
+		console.log(values)
+		console.log(murmur)
+	})
+	console.log(fingerprint);
+}

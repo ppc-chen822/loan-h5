@@ -3,7 +3,7 @@ import store from './store'
 import {
   getDictName, getFirstName, isOlder,
   getDictList, getDateTime, getDateFrom,
-  getLastName, getContent
+  getLastName, getContent, createFingerprint
 } from '@/utils.js'
 Vue.prototype.$store = store
 
@@ -20,6 +20,7 @@ Vue.prototype.$getDictList = getDictList
 Vue.prototype.$getDateTime = getDateTime
 Vue.prototype.$getDateFrom = getDateFrom
 Vue.prototype.$getContent = getContent
+Vue.prototype.$createFingerprint = createFingerprint
 Vue.prototype.$mainColor = '#227aff'
 
 Vue.use(uView);
