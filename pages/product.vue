@@ -1,6 +1,6 @@
 <template>
   <view class="product_info">
-    <com-title title="产品匹配" :icon="titleIcon" :isBorder="false" />
+    <!-- <com-title title="产品匹配" :icon="titleIcon" :isBorder="false" /> -->
     <good-product />
   </view>
 </template>
@@ -21,6 +21,6 @@ export default {
 
 <style lang="scss" scoped>
 .product_info {
-  margin-top: 24rpx;
+  // margin-top: 24rpx;
 }
 </style>

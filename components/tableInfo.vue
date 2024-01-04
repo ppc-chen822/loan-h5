@@ -1,9 +1,9 @@
 <template>
-  <view class="table_info">
+  <view class="table_info" :style="paddingNo ? 'padding:0' : ''">
     <empty
       v-if="td.length == 0"
       text="暂无数据"
-      iconSize="70"
+      iconSize="40"
       mode="data"
       :isFull="false"
     />
@@ -28,19 +28,24 @@
               :class="index == 0 ? 'tiltLine' : ''"
               v-for="(item, index) in th"
               :key="index"
+              :style="index == 0 ? 'width:25%' : ''"
             >
               <template v-if="index != 0">
                 <view>
                   {{ item.name }}
                 </view>
               </template>
-              <view v-else class="tiltLine" width="25%">
+              <view v-else class="tiltLine">
                 <span class="year">年份</span><span class="month">月份</span>
               </view>
             </th>
           </template>
           <template v-else>
-            <th v-for="(item, index) in th" :key="index">
+            <th
+              v-for="(item, index) in th"
+              :style="`width:${item.width}`"
+              :key="index"
+            >
               {{ item.name }}
             </th>
           </template>
@@ -48,7 +53,7 @@
           <th>2023</th> -->
         </tr>
       </thead>
-      <tbody align="center" class="tableBody">
+      <tbody align="center" class="tableBody" :style="`background:${tbgColor}`">
         <tr
           :class="trBorder ? 'table_bb_tr' : ''"
           v-for="(item, index) in newTd"
@@ -84,6 +89,14 @@ export default {
     thLeft: {
       type: String,
       default: ''
+    },
+    tbgColor: {
+      type: String,
+      default: ''
+    },
+    paddingNo: {
+      type: Boolean,
+      default: false
     },
     tdBorder: {
       type: Boolean,
@@ -164,7 +177,8 @@ export default {
   }
 }
 .tablehead {
-  background-color: #f1f5f8;
+  color: #666e7b;
+  background-color: #e7f6ff;
   border: 1rpx solid #efefef;
 }
 th {

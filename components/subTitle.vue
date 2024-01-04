@@ -33,6 +33,9 @@ export default {
 .title_text {
   font-size: 28rpx;
   font-weight: bold;
+  color: #333333;
+  padding-bottom: 8rpx;
+  border-bottom: 4rpx solid #2c5fdf;
 }
 .title_unit {
   font-size: 24rpx;

@@ -1,7 +1,7 @@
 <template>
   <view class="form_data">
-    <com-title title="企业概况" :icon="titleIcon" />
-    <view class="top" v-if="false">
+    <!-- <com-title title="企业概况" :icon="titleIcon" /> -->
+    <view class="top" v-if="true">
       <view class="title"
         >{{ dataObj.baseinfoVo.nsrmc }}
         <view class="tips">产品方案</view>
@@ -17,46 +17,171 @@
         <view><text>法人姓名：</text>{{ dataObj.basic.operName }}</view>
         <view><text>纳税信用等级：</text>{{ dataObj.evaluationResult }}</view>
       </view>
-    </view>
-    <u-cell-group :border="false">
-      <u-cell
-        v-for="(item, index) in formData"
-        :key="index"
-        :title="item.name"
-        :value="item.value || '--'"
-      >
-      </u-cell>
-    </u-cell-group>
-    <view v-if="isShow">
-      <view class="bu_cell">
-        <view class="title"> 股东信息 </view>
-        <tableInfo :th="th" :td="td" />
+      <view class="module_text">
+        <view><text>行业分类：</text>{{ dataObj.baseinfoVo.hymc }}</view>
       </view>
-      <view class="bu_cell">
-        <view class="title"> 信贷查询记录 </view>
-        <view class="empty" v-if="dataObj.yshdInfos.length == 0">无记录</view>
-        <view v-else>
-          <tableInfoScoll :th="Tth" :td="Ttd" />
+      <view class="module_text">
+        <view><text>企业类型：</text>{{ dataObj.basic.econKind }}</view>
+      </view>
+      <view class="more_text">
+        <view
+          ><text>经营范围：</text>{{ scope }}
+          <view class="all" @click="all">{{ isAll ? '收起' : '全部' }}</view>
         </view>
       </view>
     </view>
-    <view class="load_more_com">
-      <load-more @toggle="toggle" />
+    <view class="bu_cell">
+      <view class="title"> 股东信息 </view>
+      <tableInfo :th="th" :td="td" />
     </view>
-    <view class="module">
-      <com-title title="工商司法提示" :icon="titleIcon" />
-      <table-info :th="oneTh" :td="oneTd" :trBorder="true" :tdBorder="false" />
+    <view class="bu_cell">
+      <view class="title"> 信贷查询记录 </view>
+      <view class="empty" v-if="dataObj.yshdInfos.length == 0"
+        >该企业无信贷查询记录~</view
+      >
+      <view v-else>
+        <tableInfoScoll :th="Tth" :td="Ttd" />
+      </view>
     </view>
+    <view class="bu_cell">
+      <view class="title"> 工商变更 </view>
+      <view
+        class="empty"
+        v-if="dataObj.enterpriseInfoPrompt.cntOperChange3yr == 0"
+        >该企业无法人、股东、注册资本相关变更～</view
+      >
+      <view class="table_lr" v-else>
+        <table
+          class="table"
+          width="100%"
+          cellspacing="0"
+          bordercolor="#efefef"
+          cellpadding="10"
+          frame="solid"
+          rules="solid"
+        >
+          <tr>
+            <td style="width: 30%">最近一次法人变更</td>
+            <td style="width: 20%">
+              {{ dataObj.lastCorporateChange }}
+            </td>
+            <td style="width: 30%">法人/股东变更</td>
+            <td style="width: 20%">
+              {{
+                dataObj.enterpriseInfoPrompt.cntOperChange3yr == 0 ? '否' : '是'
+              }}
+            </td>
+          </tr>
+        </table>
+      </view>
+    </view>
+    <view class="bu_cell">
+      <view class="title"> 工商司法提示 </view>
+      <view class="table_lr">
+        <table
+          class="table"
+          width="100%"
+          cellspacing="0"
+          bordercolor="#efefef"
+          cellpadding="10"
+          frame="solid"
+          rules="solid"
+        >
+          <tr>
+            <td style="width: 30%">失信被执行人数</td>
+            <td style="width: 20%">
+              {{ dataObj.enterpriseInfoPrompt.disruptCount }}
+            </td>
+            <td style="width: 30%">企业成立距今月份数</td>
+            <td style="width: 20%">
+              {{ dataObj.enterpriseInfoPrompt.cpOperMonth }}
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 30%">法院公告条数</td>
+            <td style="width: 20%">
+              {{ dataObj.enterpriseInfoPrompt.courtInfoCount }}
+            </td>
+            <td style="width: 30%">被执行条数</td>
+            <td style="width: 20%">
+              {{ dataObj.enterpriseInfoPrompt.undertakerCount }}
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 30%">企业限制高消费条数</td>
+            <td style="width: 20%">
+              {{ dataObj.enterpriseInfoPrompt.companyConsumLimited }}
+            </td>
+            <td style="width: 30%">法定代表人限制高消费记录</td>
+            <td style="width: 20%">
+              {{ dataObj.enterpriseInfoPrompt.applierConsumLimited }}
+            </td>
+          </tr>
+        </table>
+      </view>
+    </view>
+    <subTitle title="违法违章信息" unit="单位：万元" />
+    <table-info :th="nineTh" :td="nineTd" />
+    <subTitle title="欠税信息" unit="单位：万元" />
+    <table-info :th="oneTh" :td="tenTd" :trBorder="true" :tdBorder="false" />
+    <view class="card_client">
+      <view class="title">
+        <u-image :src="icA" width="56rpx" height="20rpx" mode=""></u-image>
+        <view class="t_text">累计前十大客户列表</view>
+        <u-image :src="icB" width="56rpx" height="20rpx" mode=""></u-image>
+      </view>
+      <table-info :th="thirTh" :td="thirTd" tbgColor="#e7f6ff" paddingNo />
+      <!--  -->
+      <view class="title">
+        <u-image :src="icA" width="56rpx" height="20rpx" mode=""></u-image>
+        <view class="t_text">累计前十大供应商列表</view>
+        <u-image :src="icB" width="56rpx" height="20rpx" mode=""></u-image>
+      </view>
+      <table-info :th="forthTh" :td="forthTd" tbgColor="#e7f6ff" paddingNo />
+    </view>
+    <template v-if="false">
+      <u-cell-group :border="false">
+        <u-cell
+          v-for="(item, index) in formData"
+          :key="index"
+          :title="item.name"
+          :value="item.value || '--'"
+        >
+        </u-cell>
+      </u-cell-group>
+      <view v-if="isShow">
+        <view class="bu_cell">
+          <view class="title"> 信贷查询记录 </view>
+          <view class="empty" v-if="dataObj.yshdInfos.length == 0">无记录</view>
+          <view v-else>
+            <tableInfoScoll :th="Tth" :td="Ttd" />
+          </view>
+        </view>
+      </view>
+      <view class="load_more_com">
+        <load-more @toggle="toggle" />
+      </view>
+      <view class="module">
+        <com-title title="工商司法提示" :icon="titleIcon" />
+        <table-info
+          :th="oneTh"
+          :td="oneTd"
+          :trBorder="true"
+          :tdBorder="false"
+        />
+      </view>
+    </template>
   </view>
 </template>
 
 <script>
+import subTitle from '../components/subTitle.vue'
 import comTitle from '@/components/comTitle.vue'
 import loadMore from '@/components/loadMore.vue'
 import tableInfoScoll from '@/components/tableInfoScoll.vue'
 import tableInfo from '@/components/tableInfo.vue'
 export default {
-  components: { comTitle, loadMore, tableInfo, tableInfoScoll },
+  components: { comTitle, loadMore, tableInfo, tableInfoScoll, subTitle },
   props: {
     dataObj: {
       type: Object,
@@ -67,6 +192,81 @@ export default {
   },
   data() {
     return {
+      icA: require('@/static/ic01.png'),
+      icB: require('@/static/ic02.png'),
+      isAll: false,
+      oneTh: [
+        {
+          prop: 'name',
+          name: '指标名称'
+        },
+        {
+          prop: 'value',
+          name: '结果'
+        }
+      ],
+      tenTd: [],
+      nineTh: [
+        {
+          prop: 'illegal_fact',
+          name: '违法事实'
+        },
+        {
+          prop: 'start_at',
+          name: '案件时间'
+        },
+        {
+          prop: 'clzt',
+          name: '案件状态'
+        }
+      ],
+      nineTd: [],
+      thirTd: [],
+      thirTh: [
+        {
+          width: '15%',
+          prop: 'index',
+          name: '序号'
+        },
+        {
+          width: '40%',
+          prop: 'buyerName',
+          name: '客户名称'
+        },
+        {
+          width: '30%',
+          prop: 'totalAmount',
+          name: '交易额（万元）'
+        },
+        {
+          width: '15%',
+          prop: 'rate',
+          name: '占比'
+        }
+      ],
+      forthTd: [],
+      forthTh: [
+        {
+          width: '15%',
+          prop: 'index',
+          name: '序号'
+        },
+        {
+          width: '40%',
+          prop: 'salerName',
+          name: '供应商名称'
+        },
+        {
+          width: '30%',
+          prop: 'totalAmount',
+          name: '交易额（万元）'
+        },
+        {
+          width: '15%',
+          prop: 'rate',
+          name: '占比'
+        }
+      ],
       Ttd: [
         {
           dsfjgmc: '天津金城银行',
@@ -150,16 +350,89 @@ export default {
         {
           name: '参股比例',
           prop: 'stockRate'
+        },
+        {
+          name: '股东类型',
+          prop: 'stock_type'
         }
       ],
       td: []
     }
   },
+  computed: {
+    scope() {
+      const { isAll, dataObj } = this
+      if (isAll) {
+        {
+          dataObj.basic.scope
+        }
+        return dataObj.basic.scope
+      } else {
+        return `${dataObj.basic.scope.slice(0, 45)}...`
+      }
+    }
+  },
   mounted() {
     this.initOneData()
+    this.initThirData()
+    this.initTenData()
+    this.tdOneData()
     this.init()
   },
   methods: {
+    // 纳税信息提示
+    initTenData() {
+      const dataObj = this.dataObj.coreTaxFinanceIndex
+      this.tenTd = [
+        {
+          name: '近12月滞纳金次数',
+          value: dataObj.znjTimesRec12Mon
+        },
+        {
+          name: '近12月税收违法违章条数',
+          value: dataObj.inspectionTimesRec12Mon
+        }
+      ]
+    },
+    // 违法违章
+    tdOneData() {
+      const inspection = this.dataObj.inspection
+      if (inspection.length > 0) {
+        this.nineTd = inspection.map((item) => {
+          return {
+            illegal_fact: item.illegal_fact,
+            start_at: item.start_at,
+            clzt: item.clzt
+          }
+        })
+      }
+    },
+    // 十大客户
+    initThirData() {
+      const customertList = this.dataObj.customertList
+      this.thirTd = customertList.map((item, index) => {
+        return {
+          buyerName: item.buyerName,
+          index: `No.${index + 1}`,
+          totalAmount: item.totalAmount,
+          rate: item.rate.toFixed() + '%'
+        }
+      })
+      const supplierList = this.dataObj.supplierList
+      this.forthTd = supplierList.map((item, index) => {
+        return {
+          salerName: item.salerName,
+          index: `No.${index + 1}`,
+          totalAmount: item.totalAmount,
+          rate: item.rate.toFixed() + '%'
+        }
+      })
+    },
+    //显示全部
+    all() {
+      const { isAll } = this
+      this.isAll = !isAll
+    },
     // 工商司法提示
     initOneData() {
       const { dataObj } = this
@@ -197,7 +470,8 @@ export default {
         return {
           name: res.name,
           totalShouldCapi: res.totalShouldCapi,
-          stockRate: res.stockRate * 100 + '%'
+          stockRate: res.stockRate * 100 + '%',
+          stock_type: res.stock_type
         }
       })
     },
@@ -337,6 +611,25 @@ export default {
     }
   }
 }
+.all {
+  position: absolute;
+  bottom: 0rpx;
+  right: 60rpx;
+  border-bottom: 1rpx solid #fff;
+}
+.more_text {
+  position: relative;
+  display: flex;
+  font-size: 24rpx;
+  margin-top: 32rpx;
+  text {
+    color: #93b8ff;
+  }
+  > view {
+    color: #fff;
+    min-width: 50%;
+  }
+}
 .module_text {
   display: flex;
   font-size: 24rpx;
@@ -358,18 +651,61 @@ export default {
   margin-top: 24rpx;
 }
 .bu_cell {
-  border-bottom: 1rpx solid #e5e5e5;
+  margin-top: 40rpx;
   .title {
-    padding: 20rpx 30rpx;
+    display: inline-block;
     font-size: 26rpx;
-    color: #959595;
+    color: #333333;
+    padding-bottom: 8rpx;
+    margin-left: 30rpx;
+    border-bottom: 4rpx solid #2c5fdf;
   }
   .empty {
-    padding: 0rpx 30rpx 20rpx 30rpx;
+    padding: 30rpx 30rpx;
     font-size: 26rpx;
-    color: #2e2e2e;
+    color: #999999;
     text-align: center;
   }
+}
+.table_lr {
+  padding: 20rpx;
+  width: 100%;
+  box-sizing: border-box;
+  td {
+    font-size: 24rpx;
+    font-family: PingFang SC, PingFang SC;
+    font-weight: 400;
+    color: #666e7b;
+    text-align: center;
+    padding: 20rpx;
+  }
+  & td:nth-child(odd) {
+    background-color: #e7f6ff;
+  }
+}
+.card_client {
+  margin: 28rpx 20rpx 40rpx 20rpx;
+  background-color: #e7f6ff;
+  border-radius: 12rpx;
+  .title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40rpx 0;
+    .t_text {
+      margin: 0 16rpx;
+      font-size: 32rpx;
+      font-weight: 600;
+      color: #2c5fdf;
+    }
+  }
+}
+.table {
+  border: 1rpx solid #efefef;
+  border-collapse: collapse;
+}
+td {
+  border: 1rpx solid #efefef;
 }
 .form_data {
   // margin-top: 24rpx;

@@ -1,6 +1,6 @@
 <template>
   <view class="report_content">
-    <u-sticky :bgColor="curTab == 1 ? '#2c5fdf' : '#fff'">
+    <u-sticky :bgColor="curTab == 1 ? '#2c5fdf' : '#fff'" v-if="isBoss">
       <view class="con_tabs">
         <u-tabs
           :list="tabsList"
@@ -30,7 +30,7 @@
       v-if="curTab == 2 && Object.values(marketContent).length !== 0"
       :dataObj="marketContent"
     />
-    <product v-if="curTab == 3" :deviceId="deviceId"/>
+    <product v-if="curTab == 3" :deviceId="deviceId" />
   </view>
 </template>
 
@@ -48,13 +48,12 @@ export default {
   onLoad(options) {
     if (options) {
       this.deviceId = options.deviceId
-			uni.setStorageSync('deviceId',options.deviceId)
+      uni.setStorageSync('deviceId', options.deviceId)
       if (options.userId) {
         this.getAuthorizeUrl(options.userId)
       } else {
         this.getFirmData(options.deviceId)
         this.curTab = 3
-        this.isBoss = true
         this.tabsList = [
           {
             name: '准入产品',
@@ -91,7 +90,8 @@ export default {
         }
       ],
       firmContent: {},
-      marketContent: {}
+      marketContent: {},
+      deviceId: ''
     }
   },
   mounted() {
@@ -111,6 +111,7 @@ export default {
       })
       getFirmDataApi(devid)
         .then((res) => {
+          this.isBoss = true
           this.firmContent = {
             baseinfoVo: res.baseinfoVo || {},
             basic: res.enterprise.basic,
@@ -118,7 +119,11 @@ export default {
             evaluationResult: res.evaluationResult,
             partners: res.enterprise.partners,
             enterpriseInfoPrompt: res.enterpriseInfoPrompt,
-            yshdInfos: res.yshdInfos
+            yshdInfos: res.yshdInfos,
+            customertList: res.customertList,
+            supplierList: res.supplierList,
+            inspection: res.inspection || [],
+            coreTaxFinanceIndex: res.coreTaxFinanceIndex || {}
           }
           this.marketContent = {
             enterpriseInfoPrompt: res.enterpriseInfoPrompt,
@@ -126,17 +131,16 @@ export default {
             taxDeclareSjjeByYear: res.taxDeclareSjjeByYear || [],
             taxPayAmountByYear: res.taxPayAmountByYear || [],
             taxAnalysisList: res.taxAnalysisList || [],
-            inspection: res.inspection || [],
             coreTaxFinanceIndex: res.coreTaxFinanceIndex || {},
             salesYearList: res.salesYearList,
             salesTypes: res.salesTypes,
             customerYear: res.customerYear,
-            customertList: res.customertList,
-            supplierList: res.supplierList,
             basicStatistics: res.basicStatistics[0],
             invoiceInfoPrompt: res.invoiceInfoPrompt,
             tax_bill_info: res.tax_bill_info,
-            baseinfoVo: res.baseinfoVo || {}
+            baseinfoVo: res.baseinfoVo || {},
+            evaluationResult: res.evaluationResult || '--',
+            monthTotal: res.monthTotal
           }
           uni.hideLoading()
         })
@@ -161,6 +165,7 @@ export default {
       getAuthorizeUrlApi(deviceId, userId)
         .then((res) => {
           console.log(res)
+          this.isBoss = true
           if (res.baseUrl) {
             window.location.href = res.baseUrl
           } else {

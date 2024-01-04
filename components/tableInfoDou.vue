@@ -28,6 +28,7 @@
               :class="index == 0 ? 'tiltLine' : ''"
               v-for="(item, index) in th"
               :key="index"
+              :style="index == 0 ? 'width:25%' : ''"
             >
               <template v-if="index != 0">
                 <view>
@@ -168,7 +169,7 @@ export default {
   }
 }
 .tablehead {
-  background-color: #f1f5f8;
+  background-color: #e7f6ff;
   border: 1rpx solid #efefef;
 }
 th {

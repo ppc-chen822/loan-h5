@@ -93,6 +93,7 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding: 32rpx;
   .btn-con {
     width: 30%;
     margin-top: 50rpx;

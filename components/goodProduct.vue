@@ -17,24 +17,27 @@
             <u-image :src="item.logo" width="56rpx" height="56rpx"></u-image>
             <view>{{ item.name }}</view>
           </view>
-          <view class="left" @click="goDetail(item)">立即申请</view>
+          <!-- <view class="left" @click="goDetail(item)">立即申请</view> -->
+          <view class="left" @click="goDetail(item)">
+            <u-icon name="arrow-right" top="8" color="#222" bold></u-icon>
+          </view>
         </view>
         <view class="mid">
-          <view style="color: #f16039">
+          <view>
             <view class="num"
               >{{ item.maxLoanAmount || '--' }}<text>万</text></view
             >
             <view class="label">最高额度</view>
           </view>
           <view>
+            <view class="num">{{ item.yearRate || '--' }}<text>起</text></view>
+            <view class="label">年华利率</view>
+          </view>
+          <view>
             <view class="num"
               >{{ item.loanLimitList || '--' }}<text>个月</text></view
             >
-            <view class="label">期限</view>
-          </view>
-          <view>
-            <view class="num">{{ item.yearRate || '--' }}<text>起</text></view>
-            <view class="label">年利率</view>
+            <view class="label">贷款期限</view>
           </view>
         </view>
         <view class="bom" v-if="false">
@@ -91,7 +94,7 @@ export default {
       uni.showLoading({
         title: '加载中'
       })
-      let deviceId = '123123'
+      let deviceId = uni.getStorageSync('deviceId')
       getProductApi(deviceId)
         .then((res) => {
           console.log(res)
@@ -154,14 +157,14 @@ export default {
     }
   }
   .left {
-    width: 168rpx;
-    height: 60rpx;
-    color: #2485ee;
-    line-height: 60rpx;
-    text-align: center;
-    font-size: 26rpx;
-    border-radius: 50rpx;
-    border: 1rpx solid #2485ee;
+    // width: 168rpx;
+    // height: 60rpx;
+    // color: #2485ee;
+    // line-height: 60rpx;
+    // text-align: center;
+    // font-size: 26rpx;
+    // border-radius: 50rpx;
+    // border: 1rpx solid #2485ee;
   }
 }
 .mid {
@@ -170,27 +173,29 @@ export default {
   align-items: center;
   margin-top: 32rpx;
   & > view {
+    // text-align: center;
     .num {
       font-size: 40rpx;
       font-size: 700;
+      color: #e49043;
       text {
         font-size: 28rpx;
       }
     }
     .label {
-      margin-top: 12rpx;
-      font-size: 24rpx;
+      margin-top: 8rpx;
+      font-size: 20rpx;
       color: #9999;
     }
   }
   & > view:first-child {
-    flex: 1.2;
+    flex: 0.8;
   }
   & > :nth-child(2) {
-    flex: 1.1;
+    flex: 1;
   }
   & > view:last-child {
-    flex: 1;
+    flex: 0.8;
   }
 }
 .bom {
