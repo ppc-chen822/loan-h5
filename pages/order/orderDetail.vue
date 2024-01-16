@@ -59,13 +59,13 @@
           :desc="content.commissionTime"
         ></uv-steps-item>
       </uv-steps>
-      <view class="appeal" v-if="content.status == 3">
+      <view class="appeal" v-if="content.status == 5">
         <upload ref="upload1" :iconUrl="iconC" />
         <upload ref="upload2" :iconUrl="iconD" />
       </view>
       <view
         class="btn"
-        v-if="content.status == 3"
+        v-if="content.status == 5"
         @click="updatePro(content.id)"
       >
         申诉

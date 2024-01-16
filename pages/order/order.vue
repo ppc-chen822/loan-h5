@@ -4,10 +4,10 @@
       <view class="top">
         <uv-search
           searchIcon="search"
-          placeholder="请输入搜索内容"
+          placeholder="请输入企业名称"
           v-model="company"
-          @search="getProList"
-          @clear="getProList"
+          @search="search"
+          @clear="search"
         ></uv-search>
         <uv-tabs :list="tabsList" :scrollable="false" @click="tabSwitch" />
       </view>
@@ -77,6 +77,11 @@ export default {
     }
   },
   methods: {
+    /** 搜索 */
+    search() {
+      const { userId } = this
+      this.getProList(userId)
+    },
     /** 状态颜色 */
     color(status) {
       switch (status) {

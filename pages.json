@@ -15,7 +15,16 @@
 			"path": "pages/apply/apply",
 			"style": {
 				"navigationBarTitleText": "",
-				"navigationBarTextStyle": "white"
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/accredit/accredit",
+			"style": {
+				"navigationBarTitleText": "企e查",
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
 			}
 		},
 		{

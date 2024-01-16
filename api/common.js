@@ -54,3 +54,13 @@ export const downloadApi = (params) => http.get(
 	`${baseURL}/api/appConfig/getAppConfig`,
 	params
 )
+// 配单
+export const matchOrderApi = (userId, params) => http.post(
+	`${baseURL}/api/authCompany/matchOrder/${userId}`,
+	params
+)
+// 企业信息查询
+export const getCompanyApi = (params) => http.get(
+	`${baseURL}/api/authCompany/matchCompanyName`,
+	{params}
+)

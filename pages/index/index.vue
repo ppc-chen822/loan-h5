@@ -1,6 +1,6 @@
 <template>
   <view class="report_content">
-    <u-sticky :bgColor="curTab == 1 ? '#2c5fdf' : '#fff'" v-if="isBoss">
+    <!-- <u-sticky :bgColor="curTab == 1 ? '#2c5fdf' : '#fff'" v-if="isBoss">
       <view class="con_tabs">
         <u-tabs
           :list="tabsList"
@@ -21,16 +21,17 @@
           :scrollable="false"
         />
       </view>
-    </u-sticky>
-    <firmInfo
+    </u-sticky> -->
+    <!-- <firmInfo
       v-if="curTab == 1 && Object.values(firmContent).length !== 0"
       :dataObj="firmContent"
-    />
-    <market
+    /> -->
+    <!-- <market
       v-if="curTab == 2 && Object.values(marketContent).length !== 0"
       :dataObj="marketContent"
-    />
-    <product v-if="curTab == 3" :deviceId="deviceId" />
+    /> -->
+    <product :deviceId="deviceId" />
+    <!-- <product v-if="curTab == 3" :deviceId="deviceId" /> -->
   </view>
 </template>
 
@@ -53,21 +54,21 @@ export default {
         this.getAuthorizeUrl(options.userId)
       } else {
         this.getFirmData(options.deviceId)
-        this.curTab = 3
-        this.tabsList = [
-          {
-            name: '准入产品',
-            key: 3
-          },
-          {
-            name: '企业信息',
-            key: 1
-          },
-          {
-            name: '营销数据',
-            key: 2
-          }
-        ]
+        // this.curTab = 3
+        // this.tabsList = [
+        //   {
+        //     name: '准入产品',
+        //     key: 3
+        //   },
+        //   {
+        //     name: '企业信息',
+        //     key: 1
+        //   },
+        //   {
+        //     name: '营销数据',
+        //     key: 2
+        //   }
+        // ]
       }
     }
   },
@@ -164,8 +165,6 @@ export default {
       const userId = id
       getAuthorizeUrlApi(deviceId, userId)
         .then((res) => {
-          console.log(res)
-          this.isBoss = true
           if (res.baseUrl) {
             window.location.href = res.baseUrl
           } else {
