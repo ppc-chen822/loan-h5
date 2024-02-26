@@ -45,7 +45,7 @@
         ></uv-steps-item>
         <uv-steps-item
           v-if="[4, 5].includes(content.status)"
-          :title="`授信${content.creditAmount}万`"
+          :title="`授信${(content.creditAmount/10000).toFixed(2)}万`"
           :desc="content.createTime"
         ></uv-steps-item>
         <uv-steps-item

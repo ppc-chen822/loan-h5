@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { applyProductApi } from '@/api/common.js'
+import { applyProductApi, getCompanyByIdApi } from '@/api/common.js'
 import bottomTool from '@/components/bottomTool/bottomTool.vue'
 export default {
   components: { bottomTool },
@@ -112,7 +112,25 @@ export default {
       title: `${this.title}`
     })
   },
+  mounted() {
+    this.getCompanyById()
+  },
   methods: {
+    // 回填信息
+    getCompanyById() {
+      const deviceId = uni.getStorageSync('deviceId')
+      getCompanyByIdApi(deviceId)
+        .then((res) => {
+          const { companyName, phone, name, identity } = res
+          this.formData.copyName = companyName
+          this.formData.phone = phone
+          this.formData.idCard = identity
+          this.formData.name = name
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
     // 立即注册
     submit() {
       this.$refs.formData.validate().then((res) => {
@@ -125,7 +143,13 @@ export default {
       const deviceId = uni.getStorageSync('deviceId')
       applyProductApi(deviceId, formData)
         .then((res) => {
-          window.location.href = res.data
+					if(res.data && res.data.includes('http')){
+						window.location.href = res.data
+					}else{
+						uni.navigateTo({
+							url:`/pages/order/orderDetail?id=${res.data}`
+						})
+					}
         })
         .catch((err) => {
           console.log(err)

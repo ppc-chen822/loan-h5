@@ -62,5 +62,10 @@ export const matchOrderApi = (userId, params) => http.post(
 // 企业信息查询
 export const getCompanyApi = (params) => http.get(
 	`${baseURL}/api/authCompany/matchCompanyName`,
-	{params}
+	{ params }
+)
+// 通过设备id查询企业信息
+export const getCompanyByIdApi = (deviceld, params) => http.get(
+	`/system/company/authCompany/${deviceld}`,
+	{ params }
 )
