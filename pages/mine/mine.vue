@@ -1,76 +1,38 @@
 <template>
-  <view class="bigbox">
-    <view class="contentBox">
-      <view class="module1">
-        <u-cell-group :border="false">
-          <u-cell
-            :border="true"
-            title="头像"
-            :titleStyle="titleStyle"
-            :isLink="true"
-            @click="editAvatar"
-          >
-            <u-image
-              slot="right-icon"
-              shape="circle"
-              width="60rpx"
-              height="60rpx"
-            ></u-image>
-          </u-cell>
-        </u-cell-group>
-        <view v-if="userInfo.acctType == 10">
-          <u-cell-group :border="false">
-            <u-cell :border="true" title="用户姓名" :titleStyle="titleStyle">
-              <view slot="value" class="info-value">{{
-                userInfo.userName
-              }}</view>
-            </u-cell>
-            <u-cell :border="false" title="性别" :titleStyle="titleStyle">
-              <view slot="value" class="info-value">{{
-                userInfo.userSex == 1 ? '男' : '女'
-              }}</view>
-            </u-cell>
-          </u-cell-group>
-        </view>
-        <view v-if="userInfo.acctType == 20">
-          <u-cell-group :border="false">
-            <u-cell :border="true" title="公司名称" :titleStyle="titleStyle">
-              <view slot="value" class="info-value">{{
-                userInfo.corpName
-              }}</view>
-            </u-cell>
-            <u-cell :border="false" title="联系人" :titleStyle="titleStyle">
-              <view slot="value" class="info-value">{{
-                userInfo.legalName
-              }}</view>
-            </u-cell>
-          </u-cell-group>
+  <view class="mine_page">
+    <view class="mine_top">
+      <view class="t_left">
+        <uv-image
+          width="150rpx"
+          height="150rpx"
+          :src="avater"
+          radius="10rpx"
+        ></uv-image>
+        <view class="info">
+          <view class="i_name">{{ userInfo.nickname || '--' }}</view>
+          <view class="id_name">ID:{{ userInfo.userUid || '--' }}</view>
         </view>
       </view>
-      <view class="module2">
-        <u-cell-group :border="false">
-          <!-- <u-cell
-            v-if="userInfo.acctType == 10"
-            :border="true"
-            title="实名认证"
-            :isLink="true"
-            :titleStyle="titleStyle"
-            :value="userInfo.legalName"
-          /> -->
-          <u-cell
-            v-for="item in navList"
-            :key="item.name"
-            :value="item.value"
-            :title="item.name"
-            :border="item.border"
-            :isLink="true"
-            :titleStyle="titleStyle"
-            :name="item.navigate"
-            @click="clickCell(item)"
-          >
-          </u-cell>
-        </u-cell-group>
+      <view class="t_right" @click="shareTeam">
+        <!-- <uv-icon name="scan" size="40rpx"></uv-icon> -->
+        <uv-icon name="arrow-right" size="40rpx"></uv-icon>
       </view>
+    </view>
+    <view class="module">
+      <uv-cell-group>
+        <uv-cell
+          v-for="(item, index) in menuList"
+          :key="index"
+          isLink
+          :title="item.name"
+          @click="goPage(item)"
+        >
+          <!-- 自定义左侧图标 -->
+          <template v-slot:icon>
+            <uv-icon size="50rpx" :name="item.icon" color=""></uv-icon>
+          </template>
+        </uv-cell>
+      </uv-cell-group>
     </view>
   </view>
 </template>
@@ -79,64 +41,82 @@
 export default {
   data() {
     return {
-      userInfo: {},
-      titleStyle: {
-        fontSize: '28rpx',
-        fontWeight: 'bold',
-        lineHeight: '70rpx',
-        color: '#222',
-        fontFamily: 'PingFang SC'
-      },
-      navList: [
+      userInfo: uni.getStorageInfoSync('userInfo').data,
+      avater: require('@/static/avater.png'),
+      menuList: [
         {
-          name: '昵称',
+          icon: 'red-packet',
+          name: '我的钱包',
           border: true,
-          value: '着急的缘分'
+          navigate: '/pages/mine/purse'
         },
         {
-          name: '联系方式',
+          icon: 'file-text',
+          name: '订单管理',
           border: true,
-          navigate: '/pagesMy/setting/phone'
+          navigate: '/pages/order/order?userId=439006'
         },
         {
-          name: '地址信息',
+          icon: 'server-man',
+          name: '我的团队',
           border: true,
-          navigate: '/pagesMy/address/myAddress'
+          navigate: '/pages/mine/team'
         },
         {
-          name: '修改密码',
-          border: false,
-          navigate: '/pagesMy/modifyPwd'
+          icon: 'share',
+          name: '分享团队',
+          border: true,
+          navigate: '/pages/mine/shareTeam'
         }
       ]
+    }
+  },
+  methods: {
+    /** 跳转界面 */
+    goPage({ navigate }) {
+      uni.navigateTo({ url: navigate })
+    },
+    shareTeam() {
+      uni.navigateTo({ url: '/pages/mine/shareTeam' })
     }
   }
 }
 </script>
 
-<style>
-page {
-  background: #f5f5f5;
+<style lang="scss" scoped>
+.mine_top {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx 24rpx;
+  .t_left {
+    display: flex;
+    align-items: center;
+    .info {
+      margin-left: 20rpx;
+      .i_name {
+        font-size: 32rpx;
+        font-weight: 600;
+      }
+      .id_name {
+        font-size: 24rpx;
+        color: #999;
+      }
+    }
+  }
+  .t_right {
+    display: flex;
+    align-items: center;
+  }
+}
+.module {
+  margin-top: 24rpx;
+  background-color: #fff;
 }
 </style>
-<style lang="scss" scoped>
-.contentBox {
-  border-radius: 10rpx;
-  padding: 28rpx 32rpx;
-}
-
-.module1,
-.module2 {
-  background: #fff;
-  border-radius: 20rpx;
-  padding: 0rpx 28rpx;
-}
-
-.info-value {
-  font-size: 32rpx;
-}
-
-.module2 {
-  margin-top: 32rpx;
+<style>
+page {
+  background-color: #f5f5f5;
 }
 </style>

@@ -7,21 +7,80 @@
 			"path": "pages/home/home",
 			"style": {
 				"navigationBarTitleText": "首页",
-				"navigationBarTextStyle": "white"
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/home/taxReceipt",
+			"style": {
+				"navigationBarTitleText": "税票采集",
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
 			}
 		},
 		{
 			"path": "pages/message/message",
 			"style": {
 				"navigationBarTitleText": "消息",
-				"navigationBarTextStyle": "white"
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
 			}
 		},
 		{
 			"path": "pages/mine/mine",
 			"style": {
 				"navigationBarTitleText": "我的",
-				"navigationBarTextStyle": "white"
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/mine/purse",
+			"style": {
+				"navigationBarTitleText": "我的钱包",
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/mine/team",
+			"style": {
+				"navigationBarTitleText": "我的团队",
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/mine/shareTeam",
+			"style": {
+				"navigationBarTitleText": "分享团队",
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/mine/withdrawal",
+			"style": {
+				"navigationBarTitleText": "零钱提现",
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/mine/account",
+			"style": {
+				"navigationBarTitleText": "提现账户",
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/mine/addAccount",
+			"style": {
+				"navigationBarTitleText": "添加账户",
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -95,7 +154,7 @@
 				"pagePath": "pages/message/message",
 				"iconPath": "static/img/common/c.png",
 				"selectedIconPath": "static/img/common/cc.png",
-				"text": "消息"
+				"text": "企业"
 			},
 			{
 				"pagePath": "pages/mine/mine",

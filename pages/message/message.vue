@@ -9,37 +9,53 @@
         :actionStyle="actionStyle"
         borderColor="#2B51FA"
         bgColor="#fff"
+        @custom="geFirmByName"
+        @clear="getFirmFun"
       ></uv-search>
     </view>
     <view class="message_card">
-      <view class="m_card">
+      <view class="m_card" v-for="(item, index) in dataList" :key="index">
         <view class="card_item">
           <view class="card_left">
             <view class="card_text">公司名称： </view>
-            <view class="card_value">金寨县豪缘纺织有限公司</view>
+            <view class="card_value">{{ item.companyName }}</view>
           </view>
-          <view class="card_dot"></view>
+          <view v-if="item.status == 1" class="card_dot"></view>
         </view>
         <view class="card_item">
           <view class="card_left">
             <view class="card_text">订单状态：</view>
-            <view class="card_value">匹配成功</view>
+            <view
+              class="card_value"
+              :style="item.status == 1 ? 'color : #44d7b6' : 'color : #ff5555'"
+              >{{
+                item.status == 1
+                  ? '匹配成功'
+                  : item.static == 0
+                  ? '匹配中'
+                  : '匹配失败'
+              }}</view
+            >
           </view>
           <u-icon name="arrow-right" size="32rpx" bold color="#333333"></u-icon>
         </view>
         <view class="card_item">
           <view class="card_left">
             <view class="card_text">更新时间：</view>
-            <view class="card_value">匹配成功</view>
+            <view class="card_value">{{ item.updateTime }}</view>
           </view>
-          <view class="card_last">准入12家</view>
+          <view class="card_last" v-if="item.status == 1"
+            >准入{{ item.accessSize }}家</view
+          >
         </view>
       </view>
     </view>
+    <empty v-if="dataList.length == 0" />
   </view>
 </template>
 
 <script>
+import { getFirmApi, getFirmByIdApi } from '@/api/message.js'
 export default {
   data() {
     return {
@@ -52,10 +68,30 @@ export default {
         height: '68rpx',
         background: ' #2B51FA',
         borderRadius: '12rpx 12rpx 12rpx 12rpx'
-      }
+      },
+      dataList: []
     }
   },
-  methods: {}
+  mounted() {
+    this.getFirmFun()
+  },
+  methods: {
+    getFirmFun() {
+      const userId = uni.getStorageSync('userInfo').userUid
+      getFirmApi(userId).then((res) => {
+        console.log(res)
+        this.dataList = res
+      })
+    },
+    geFirmByName() {
+      const { keyword } = this
+      const userId = uni.getStorageSync('userInfo').userUid
+      getFirmByIdApi(userId, keyword).then((res) => {
+        console.log(res)
+        this.dataList = res
+      })
+    }
+  }
 }
 </script>
 
