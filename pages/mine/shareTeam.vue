@@ -10,7 +10,7 @@
       ></uv-image>
       <view class="i_name">{{ userInfo.nickname || '--' }}</view>
       <view class="id_name">ID:{{ userInfo.userUid || '--' }}</view>
-      <view>邀请码：{{ userInfo.userUid || '--' }}</view>
+      <view>邀请码：{{ userInfo.myCommunicationNumber || '--' }}</view>
       <view class="qr_code">
         <uv-qrcode
           size="452rpx"
@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       canvasImageUrl: '',
-      userInfo: uni.getStorageInfoSync('userInfo').data,
+      userInfo: uni.getStorageSync('userInfo'),
       avater: require('@/static/avater.png'),
       QrUrl: ''
     }
@@ -47,7 +47,7 @@ export default {
   mounted() {
     const myCommunicationNumber =
       uni.getStorageSync('userInfo').myCommunicationNumber
-    this.QrUrl = `http://tax.huokexinxi.com/#/pages/home/home?reCommunicationNumber=${myCommunicationNumber}`
+    this.QrUrl = `http://tax.huokexinxi.com/#/pages/home/home?myCommunicationNumber=${myCommunicationNumber}`
   },
   computed: {
     options2() {

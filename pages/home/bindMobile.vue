@@ -1,6 +1,11 @@
 <template>
   <view class="bind_mobile">
-    <uv-popup ref="popup" mode="center" round="24rpx">
+    <uv-popup
+      ref="popup"
+      mode="center"
+      round="24rpx"
+      :close-on-click-overlay="false"
+    >
       <view class="box">
         <view class="title">手机号绑定</view>
         <view class="formData">
@@ -119,7 +124,8 @@ export default {
     this.$refs.formData.setRules(this.rules)
   },
   mounted() {
-    this.formData.reCommunicationNumber = this.myCommunicationNumber
+    this.formData.reCommunicationNumber = this.myCommunicationNumber.trim()
+    console.log(this.myCommunicationNumber)
   },
   methods: {
     open() {

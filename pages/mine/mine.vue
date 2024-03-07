@@ -41,7 +41,7 @@
 export default {
   data() {
     return {
-      userInfo: uni.getStorageInfoSync('userInfo').data,
+      userInfo: uni.getStorageSync('userInfo'),
       avater: require('@/static/avater.png'),
       menuList: [
         {

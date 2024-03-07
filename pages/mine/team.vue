@@ -9,6 +9,7 @@
       <view>{{ item.nickname }}</view>
       <view>{{ item.phone || '--' }}</view>
     </view>
+    <empty v-if="list.length == 0" />
   </view>
 </template>
 

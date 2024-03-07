@@ -109,8 +109,15 @@ export default {
     }
   },
   onLoad(options) {
+    console.log(options)
     if (options.myCommunicationNumber) {
+      console.log(options.myCommunicationNumber, '加载。。。')
       this.myCommunicationNumber = options.myCommunicationNumber
+    }
+    const state = this.getUrlCode('state')
+    console.log(state, 'state')
+    if (state) {
+      this.myCommunicationNumber = state
     }
     this.checkWeChatCode()
     this.getProduct(1)
@@ -121,6 +128,8 @@ export default {
       const local = encodeURIComponent(
         'http://tax.huokexinxi.com/#/pages/home/home'
       )
+      const { myCommunicationNumber } = this
+      console.log(myCommunicationNumber, '获取code')
       const appid = 'wx1bba4883b383a0b2'
       //通过微信官方接口获取code之后，会重新刷新设置的回调地址【redirect_uri】
       window.location.href =
@@ -128,7 +137,9 @@ export default {
         appid +
         '&redirect_uri=' +
         local +
-        '&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
+        `&response_type=code&scope=snsapi_userinfo&state=${
+          myCommunicationNumber || ' '
+        }#wechat_redirect`
     },
     /**提取code [方法] */
     getUrlCode(name) {
@@ -143,7 +154,6 @@ export default {
     /** 检查浏览器地址栏中微信接口返回的code */
     checkWeChatCode() {
       const code = this.getUrlCode('code')
-      console.log(code)
       if (code) {
         this.getUserInfo(code)
       } else {
@@ -158,7 +168,6 @@ export default {
           this.$refs.bindMobile.formData.openId = res.data.data.openId
         }
         if (res.data.status == 1) {
-          console.log(res.data.data)
           uni.setStorageSync('userInfo', res.data.data)
         }
       })
@@ -178,7 +187,6 @@ export default {
     getProduct(value) {
       getProductApi(value)
         .then((res) => {
-          console.log(res)
           this.dataList = res.data
         })
         .catch((err) => {

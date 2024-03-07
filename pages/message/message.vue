@@ -14,7 +14,12 @@
       ></uv-search>
     </view>
     <view class="message_card">
-      <view class="m_card" v-for="(item, index) in dataList" :key="index">
+      <view
+        class="m_card"
+        v-for="(item, index) in dataList"
+        :key="index"
+        @click="goDetail(item)"
+      >
         <view class="card_item">
           <view class="card_left">
             <view class="card_text">公司名称： </view>
@@ -76,6 +81,12 @@ export default {
     this.getFirmFun()
   },
   methods: {
+    /** 跳转详情 */
+    goDetail({ matchUrl }) {
+      if (matchUrl) {
+        window.location.href = matchUrl
+      }
+    },
     getFirmFun() {
       const userId = uni.getStorageSync('userInfo').userUid
       getFirmApi(userId).then((res) => {
