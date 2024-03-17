@@ -146,6 +146,10 @@ export default {
         console.log(res)
         this.$refs.popup.close()
         uni.setStorageSync('userInfo', res.data)
+        const qrCode = res.data.data.qrCode
+        if (qrCode) {
+          this.$emit('bindSuccess', qrCode)
+        }
         uni.$u.toast('绑定成功')
       })
     },

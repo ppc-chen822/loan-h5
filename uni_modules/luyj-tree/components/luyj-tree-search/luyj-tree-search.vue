@@ -152,6 +152,7 @@
 				width: 100%;
 				font-size: 32rpx;
 				color: #000;
+				background-color: transparent !important;
 			}
 		}
 	}

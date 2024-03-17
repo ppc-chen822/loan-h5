@@ -1,6 +1,25 @@
 <template>
   <view class="apply">
-    <view class="ap_top"> </view>
+    <view class="info_top">
+      <view class="i_top">
+        <view> 最高 </view>
+        <view>{{ maxLoanAmount }}万</view>
+      </view>
+      <view class="i_bottom">
+        <view>
+          <view class="title"> 年化利率</view>
+          <view class="value">{{ yearRate || '--' }}%</view>
+        </view>
+        <view>
+          <view class="title"> 还款方式</view>
+          <view class="value">{{ repaymentMethod }}</view>
+        </view>
+        <view>
+          <view class="title"> 还款期数</view>
+          <view class="value">{{ loanLimitList }}期</view>
+        </view>
+      </view>
+    </view>
     <view class="apply_form">
       <uv-form
         labelWidth="200rpx"
@@ -10,9 +29,9 @@
         :rules="rules"
         ref="formData"
       >
-        <uv-form-item label="企业名称" prop="copyName" borderBottom>
+        <uv-form-item label="企业名称" prop="companyName" borderBottom>
           <uv-input
-            v-model="formData.copyName"
+            v-model="formData.companyName"
             placeholder="请输入企业名称"
             border="none"
           >
@@ -60,9 +79,14 @@ export default {
   components: { bottomTool },
   data() {
     return {
+      maxLoanAmount: '',
+      yearRate: '',
+      loanLimitList: '',
+      repaymentMethod: '',
       mode: '',
+      userId: '',
       formData: {
-        copyName: '',
+        companyName: '',
         name: '',
         idCard: '',
         phone: '',
@@ -101,10 +125,16 @@ export default {
     }
   },
   onLoad(options) {
+    console.log(options)
     if (options) {
       this.mode = options.mode
       this.formData.productId = options.id
       this.title = options.name
+      this.maxLoanAmount = options.maxLoanAmount
+      this.repaymentMethod = options.repaymentMethod
+      this.loanLimitList = options.loanLimitList
+      this.yearRate = options.yearRate
+      this.userId = options.userId
     }
   },
   onReady() {
@@ -112,17 +142,14 @@ export default {
       title: `${this.title}`
     })
   },
-  mounted() {
-    this.getCompanyById()
-  },
+  mounted() {},
   methods: {
     // 回填信息
-    getCompanyById() {
-      const deviceId = uni.getStorageSync('deviceId')
+    getCompanyById(deviceId) {
       getCompanyByIdApi(deviceId)
         .then((res) => {
           const { companyName, phone, name, identity } = res
-          this.formData.copyName = companyName
+          this.formData.companyName = companyName
           this.formData.phone = phone
           this.formData.idCard = identity
           this.formData.name = name
@@ -139,17 +166,16 @@ export default {
     },
     /**申请产品 */
     applyProduct() {
-      const { formData } = this
-      const deviceId = uni.getStorageSync('deviceId')
-      applyProductApi(deviceId, formData)
+      const { formData, userId } = this
+      applyProductApi(userId, formData)
         .then((res) => {
-					if(res.data && res.data.includes('http')){
-						window.location.href = res.data
-					}else{
-						uni.navigateTo({
-							url:`/pages/order/orderDetail?id=${res.data}`
-						})
-					}
+          if (res.data && res.data.includes('http')) {
+            window.location.href = res.data
+          } else {
+            uni.navigateTo({
+              url: `/pages/order/orderDetail?id=${res.data}`
+            })
+          }
         })
         .catch((err) => {
           console.log(err)
@@ -162,6 +188,36 @@ export default {
 
 <style lang="scss" scoped>
 .apply {
+}
+.info_top {
+  margin-top: 32rpx;
+  background-color: #fff;
+}
+.i_top {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  & view:first-child {
+    font-size: 36rpx;
+    font-weight: bold;
+  }
+  & view:last-child {
+    font-size: 48rpx;
+    font-weight: bold;
+    color: #d71c1c;
+  }
+}
+.i_bottom {
+  display: flex;
+  justify-content: space-around;
+  margin: 32rpx 0;
+  .value {
+    margin-top: 12rpx;
+    text-align: center;
+    color: #5fb9e0;
+  }
 }
 .ap_top {
   width: 100%;

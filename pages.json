@@ -6,7 +6,15 @@
 		{
 			"path": "pages/home/home",
 			"style": {
-				"navigationBarTitleText": "首页",
+				"navigationBarTitleText": "企e融",
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/home/productInfo",
+			"style": {
+				"navigationBarTitleText": "",
 				"navigationBarTextStyle": "white",
 				"navigationStyle": "custom"
 			}
@@ -22,7 +30,7 @@
 		{
 			"path": "pages/message/message",
 			"style": {
-				"navigationBarTitleText": "消息",
+				"navigationBarTitleText": "企e融",
 				"navigationBarTextStyle": "white",
 				"navigationStyle": "custom"
 			}
@@ -30,7 +38,7 @@
 		{
 			"path": "pages/mine/mine",
 			"style": {
-				"navigationBarTitleText": "我的",
+				"navigationBarTitleText": "企e融",
 				"navigationBarTextStyle": "white",
 				"navigationStyle": "custom"
 			}
@@ -118,6 +126,7 @@
 		{
 			"path": "pages/order/orderDetail",
 			"style": {
+				"navigationBarTitleText": "",
 				"navigationBarTextStyle": "white",
 				"navigationStyle": "custom"
 			}

@@ -119,6 +119,7 @@ export default {
     padding: 24rpx 28rpx 24rpx 20rpx;
     border-radius: 16rpx;
     background: #fff;
+		margin-bottom: 20rpx;
     .card_item {
       margin-bottom: 20rpx;
       display: flex;

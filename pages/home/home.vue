@@ -4,7 +4,7 @@
       <uv-swiper
         :list="list"
         keyName="image"
-        height="460rpx"
+        height="400rpx"
         radius="0"
       ></uv-swiper>
       <view class="top_btn" @click="goTax"> 授权数据码 </view>
@@ -19,14 +19,19 @@
     </view>
     <view class="h_box">
       <view class="card_list">
-        <view class="card_item" v-for="(item, index) in dataList" :key="index">
+        <view
+          class="card_item"
+          v-for="(item, index) in dataList"
+          :key="index"
+          @click="goDetail(item)"
+        >
           <view class="top">
             <view class="right">
               <u-image :src="item.logo" width="56rpx" height="56rpx"></u-image>
               <view>{{ item.name }}</view>
             </view>
             <!-- <view class="left" @click="goDetail(item)">立即申请</view> -->
-            <view class="left" @click="goDetail(item)">
+            <view class="left">
               <u-icon name="arrow-right" top="8" color="#222" bold></u-icon>
             </view>
           </view>
@@ -38,16 +43,15 @@
               <view class="label">最高额度</view>
             </view>
             <view>
-              <view class="num"
-                >{{ item.yearRate || '--' }}<text>起</text></view
-              >
-              <view class="label">年华利率</view>
+              <view class="num">{{ `${item.commission * 100}%` || '--' }}</view>
+              <view class="label">佣金政策</view>
             </view>
             <view>
-              <view class="num"
-                >{{ item.loanLimitList || '--' }}<text>个月</text></view
+              <view class="num color_n"
+                >{{ item.commission * item.maxLoanAmount * 10000 || '--'
+                }}<text>元</text></view
               >
-              <view class="label">贷款期限</view>
+              <view class="label">最高可赚</view>
             </view>
           </view>
           <view class="bom" v-if="false">
@@ -71,7 +75,19 @@
     <bindMobile
       ref="bindMobile"
       :myCommunicationNumber="myCommunicationNumber"
+      @bindSuccess="bindSuccess"
     />
+    <uv-popup
+      ref="imagePopup"
+      mode="center"
+      :safeAreaInsetBottom="false"
+      closeable
+      round="24rpx"
+    >
+      <view class="image">
+        <uv-image :src="qrcode" width="600rpx" height="600rpx"></uv-image>
+      </view>
+    </uv-popup>
     <empty v-if="dataList.length == 0" />
   </view>
 </template>
@@ -85,6 +101,7 @@ export default {
   },
   data() {
     return {
+      qrcode: '',
       myCommunicationNumber: '',
       dataList: [],
       list: [
@@ -109,7 +126,6 @@ export default {
     }
   },
   onLoad(options) {
-    console.log(options)
     if (options.myCommunicationNumber) {
       console.log(options.myCommunicationNumber, '加载。。。')
       this.myCommunicationNumber = options.myCommunicationNumber
@@ -119,10 +135,25 @@ export default {
     if (state) {
       this.myCommunicationNumber = state
     }
-    this.checkWeChatCode()
+    const code = this.getUrlCode('code')
+    if (!code) {
+      // this.getWeChatCode()
+    } else {
+      this.getUserInfo(code)
+    }
     this.getProduct(1)
   },
   methods: {
+    /** 绑定成功回调 */
+    bindSuccess(e) {
+      this.qrcode = e
+      this.$refs.imagePopup.open()
+    },
+    goDetail({ id, name }) {
+      uni.navigateTo({
+        url: `/pages/home/productInfo?id=${id}&name=${name}`
+      })
+    },
     /** 微信授权获取code */
     getWeChatCode() {
       const local = encodeURIComponent(
@@ -162,13 +193,20 @@ export default {
     },
     /** 登录 */
     getUserInfo(code) {
-      userInfoApi({ code }).then((res) => {
+      userInfoApi({
+        code
+      }).then((res) => {
         if (res.data.status == 2) {
           this.$refs.bindMobile.open()
           this.$refs.bindMobile.formData.openId = res.data.data.openId
         }
         if (res.data.status == 1) {
           uni.setStorageSync('userInfo', res.data.data)
+          const qrCode = res.data.data.qrCode
+          if (qrCode) {
+            this.qrcode = res.data.data.qrCode
+            this.$refs.imagePopup.open()
+          }
         }
       })
     },
@@ -200,9 +238,10 @@ export default {
 <style lang="scss" scoped>
 .h_banner {
   position: relative;
+
   .top_btn {
     position: absolute;
-    bottom: 76rpx;
+    bottom: 30rpx;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -216,8 +255,10 @@ export default {
     font-weight: 600;
   }
 }
+
 .card_list {
   padding: 24rpx 32rpx;
+
   .card_item {
     background-color: #fff;
     margin-bottom: 24rpx;
@@ -225,16 +266,20 @@ export default {
     padding: 32rpx 32rpx 32rpx 32rpx;
   }
 }
+
 .h_tab {
   background-color: #fff;
 }
+
 .top {
   display: flex;
   justify-content: space-between;
   align-content: center;
+
   .right {
     display: flex;
     align-items: center;
+
     & view:last-child {
       font-size: 30rpx;
       color: #333;
@@ -242,6 +287,7 @@ export default {
       margin-left: 20rpx;
     }
   }
+
   .left {
     // width: 168rpx;
     // height: 60rpx;
@@ -253,37 +299,54 @@ export default {
     // border: 1rpx solid #2485ee;
   }
 }
+
 .mid {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 32rpx;
+
   & > view {
     // text-align: center;
+    .m_text {
+      font-size: 30rpx;
+      color: #b73332;
+    }
+
+    .color_n {
+      color: #377bc7 !important;
+    }
+
     .num {
       font-size: 40rpx;
       font-size: 700;
       color: #e49043;
+
       text {
         font-size: 28rpx;
       }
     }
+
     .label {
       margin-top: 8rpx;
       font-size: 20rpx;
       color: #9999;
     }
   }
+
   & > view:first-child {
     flex: 0.8;
   }
+
   & > :nth-child(2) {
     flex: 1;
   }
+
   & > view:last-child {
     flex: 0.8;
   }
 }
+
 .bom {
   // padding: 24rpx 0;
   margin-top: 12rpx;

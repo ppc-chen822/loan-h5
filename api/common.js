@@ -13,13 +13,11 @@ export const getFirmDataApi = (deviceId) => http.get(
 export const getProductApi = (deviceId) => http.get(
 	`/system/company/productaccessinfo/${deviceId}`
 )
-
-
 const baseURL = 'http://api.huokexinxi.com' /* 根域名 */
 
 // 申请产品
-export const applyProductApi = (deviceId, params) => http.post(
-	`${baseURL}/api/productOrder/createOrder/${deviceId}`,
+export const applyProductApi = (userId, params) => http.post(
+	`${baseURL}/api/productOrder/newCreateOrder/${userId}`,
 	params
 )
 // 产品列表

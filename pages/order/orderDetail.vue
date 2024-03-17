@@ -1,13 +1,5 @@
 <template>
   <view class="order_detail">
-    <uv-navbar
-      title="个人中心"
-      bgColor="#0065eb"
-      placeholder
-      :titleStyle="{ color: '#fff' }"
-      leftIconColor="#fff"
-      autoBack
-    ></uv-navbar>
     <view class="o_top">
       <view class="t_title">
         <view class="line"></view>
@@ -90,6 +82,9 @@ export default {
   onLoad(options) {
     if (options.id) {
       this.getProDetail(options.id)
+			uni.setNavigationBarTitle({
+				title: `${options.productName}`
+			})
     }
   },
   methods: {
